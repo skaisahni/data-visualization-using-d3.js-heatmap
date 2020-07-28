@@ -1,8 +1,5 @@
+//<link rel="stylesheet" type="text/sass" href="style.sass"></link>
 
-  
-<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js" type="text/javascript"></script>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.9.1/d3-tip.min.js" type="text/javascript"></script>
 const projectName = 'heat-map';
 localStorage.setItem('example_project', 'Heat Map');
 
@@ -38,8 +35,8 @@ var colorbrewer = {
 };
 
 
-d3.json(url, callback);
 
+d3.json(url, callback);
 function callback(error, data) {
     console.log("data: ", data);
 
@@ -174,13 +171,13 @@ function callback(error, data) {
         var legend = svg.append("g")
             .classed("legend", true)
             .attr("id", "legend")
-            .attr("transform", "translate(" + (padding.left) + "," + (padding.top + height + padding.bottom - 2 * legendHeight) + ")");
+            .attr("transform", "translate(" + (padding.right) + "," + (padding.top + height + padding.bottom - 2 * legendHeight) + ")");
 
         legend.append("g")
             .selectAll("rect")
             .data(legendThreshold.range().map(function (color) {
                 var d = legendThreshold.invertExtent(color);
-                if (d[0] == null) d[0] = legendX.domain()[0];
+                if (d[0] == null) d[0] = legendX.domain()[1];
                 if (d[1] == null) d[1] = legendX.domain()[1];
                 return d;
             }))
@@ -233,11 +230,11 @@ function callback(error, data) {
             })
             .on("mouseover", function (d) {
                 var date = new Date(d.year, d.month);
-                var str = "<span class='date'>" + d3.time.format("%Y - %B")(date) + "</span>" + "<br />"
+                var array = "<span class='date'>" + d3.time.format("%Y - %B")(date) + "</span>" + "<br />"
                     + "<span class='temperature'>" + d3.format(".1f")(data.baseTemperature + d.variance) + "&#8451;" + "</span>" + "<br />"
                     + "<span class='variance'>" + d3.format("+.1f")(d.variance) + "&#8451;" + "</span>";
                 tip.attr("data-year", d.year);
-                tip.show(str);
+                tip.show(array);
             })
             .on("mouseout", tip.hide);
 
